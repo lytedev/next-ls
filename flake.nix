@@ -109,7 +109,7 @@
           inherit version elixir;
           inherit (beamPackages) erlang;
 
-          nativeBuildInputs = [pkgs.xz pkgs.zig_0_11 aliased_7zz beam];
+          nativeBuildInputs = with pkgs; [xz zig_0_11 aliased_7zz beam];
 
           mixFodDeps = beamPackages.fetchMixDeps {
             src = self.outPath;
@@ -120,7 +120,7 @@
           };
 
           BURRITO_ERTS_PATH = "/tmp/beam/";
-          BURRITO_TARGET = lib.optional localBuild burritoExe.${system};
+          BURRITO_TARGET = burritoExe.${system};
 
           preBuild =
             ''
@@ -156,7 +156,7 @@
         localBuild = true;
       };
 
-      ci = self.packages.${system}.default.override {localBuild = false;};
+      ci = self.packages.${system}.default;
     });
 
     devShells = forAllSystems ({
@@ -175,18 +175,18 @@
     in {
       default = pkgs.mkShell {
         # The Nix packages provided in the environment
-        packages = [
+        packages = with pkgs; [
           beamPackages.erlang
           elixir
           aliased_7zz
-          pkgs.autoconf
-          pkgs.automake
-          pkgs.ncurses5
-          pkgs.openssl
-          pkgs.starship
-          pkgs.xz
-          pkgs.zig_0_11
-          pkgs.zsh
+          autoconf
+          automake
+          ncurses5
+          openssl
+          starship
+          xz
+          zig_0_11
+          zsh
         ];
       };
     });

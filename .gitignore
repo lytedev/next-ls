@@ -33,3 +33,5 @@ result
 node_modules
 
 tempo-data
+
+/.elixir-tools
